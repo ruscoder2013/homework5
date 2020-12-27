@@ -1,0 +1,57 @@
+#include <iostream>
+#include <map>
+
+template<typename T, int default_number>
+class Matrix {
+public:
+    class RowProxy {
+    public:
+        RowProxy(std::map<int, int>& part_2) {
+            //part_2 = part_2;
+        }
+        RowProxy(int i) {
+            //part_2 = part_2;
+            mat[i];
+        }
+        int& operator[]( int i ) { 
+            std::cout << "op & int" << std::endl;
+            if ( part_2.find(i) == part_2.end() ) {
+                int a = -1;
+                return a;
+            } else {
+                return part_2[i];
+            }
+            return part_2[i]; 
+        }
+        const int operator[]( int i ) const { 
+            std::cout << "op int" << std::endl;
+            if ( part_2.find(i) == part_2.end() ) {
+                return -1;
+            } else {
+                return part_2[i];
+            }
+            return part_2[i]; 
+        }
+    private:
+        std::map<int, int> part_2;
+    };
+    
+    RowProxy operator[]( int i ) const {
+        if ( mat.find(i) == mat.end() ) {
+                std::map<int, int> empty_map;
+                RowProxy iter(empty_map);
+                return iter;
+            } else {
+                RowProxy iter(i); 
+                return iter;
+            }
+    }
+    std::map<int, std::map<int, int>> mat;
+};
+
+
+int main() {
+    Matrix<int, 0> matrix;
+    matrix[0];
+    return 0;
+}
