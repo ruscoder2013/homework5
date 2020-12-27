@@ -1,57 +1,80 @@
 #include <iostream>
 #include <map>
 
+
+class Mattr {
+public:
+    operator int() { return 10; }
+    void operator =(const int &a) 
+    {
+        if (a == 5)
+            std::cout << "equal" << std::endl;
+        else
+            std::cout << "don't equal" << std::endl;
+    }
+private:
+    std::map<int, std::map<int, int>> mat;
+};
+
+class IntAdapter {
+public:
+    operator int() { return 10; }
+    void operator =(const int &a) 
+    {
+        if (a == 5)
+            std::cout << "equal" << std::endl;
+        else
+            std::cout << "don't equal" << std::endl;
+    }
+};
+
 template<typename T, int default_number>
 class Matrix {
 public:
+
     class RowProxy {
+    friend class Matrix;
     public:
-        RowProxy(std::map<int, int>& part_2) {
-            //part_2 = part_2;
-        }
-        RowProxy(int i) {
-            //part_2 = part_2;
-            mat[i];
-        }
-        int& operator[]( int i ) { 
-            std::cout << "op & int" << std::endl;
-            if ( part_2.find(i) == part_2.end() ) {
-                int a = -1;
-                return a;
-            } else {
-                return part_2[i];
+        RowProxy(Matrix &parent, int row) : 
+            parent(parent),
+            row(row)
+        { }
+        
+        int& operator[](int col)
+        {
+             if ( parent.mat.find(row) != parent.mat.end() )
+             {
+                 if ( parent.mat[row].find(col) != parent.mat[row].end()) {
+                     std::cout << "exist" << std::endl;
+                     return parent.mat[row][col];
+                 }
             }
-            return part_2[i]; 
-        }
-        const int operator[]( int i ) const { 
-            std::cout << "op int" << std::endl;
-            if ( part_2.find(i) == part_2.end() ) {
-                return -1;
-            } else {
-                return part_2[i];
-            }
-            return part_2[i]; 
+            std::cout << "new" << std::endl;
+            parent.mat[row][col] = default_number;
+            return parent.mat[row][col];
         }
     private:
-        std::map<int, int> part_2;
+        Matrix& parent;
+        int row;
     };
     
-    RowProxy operator[]( int i ) const {
-        if ( mat.find(i) == mat.end() ) {
-                std::map<int, int> empty_map;
-                RowProxy iter(empty_map);
-                return iter;
-            } else {
-                RowProxy iter(i); 
-                return iter;
-            }
+    RowProxy operator[](int row)
+    {
+        return RowProxy(*this, row);
     }
     std::map<int, std::map<int, int>> mat;
 };
 
 
 int main() {
-    Matrix<int, 0> matrix;
-    matrix[0];
+    Matrix<int, -1> matrix;
+    matrix[0][0];
+    matrix[0][1] = 2;
+    std::cout << matrix[0][1] << std::endl;
+    std::cout << matrix[0][0] << std::endl;
+    std::cout << matrix[3][3] << std::endl;
+    Mattr mattr;
+    std::cout << mattr << std::endl;
+    mattr = 5;
     return 0;
 }
