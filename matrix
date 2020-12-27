@@ -16,22 +16,33 @@ private:
     std::map<int, std::map<int, int>> mat;
 };
 
-class IntAdapter {
-public:
-    operator int() { return 10; }
-    void operator =(const int &a) 
-    {
-        if (a == 5)
-            std::cout << "equal" << std::endl;
-        else
-            std::cout << "don't equal" << std::endl;
-    }
-};
 
 template<typename T, int default_number>
 class Matrix {
 public:
-
+    class IntAdapter {
+    friend class Matrix;
+    public:
+        IntAdapter(Matrix &parent, int row, int col) : 
+            parent(parent),
+            row(row),
+            col(col)
+        { }
+        operator int() { return parent.mat[row][col]; }
+        int& operator =(const int &a) 
+        {
+            parent.mat[row][col] = a;
+            if (a == 5)
+                std::cout << "equal" << std::endl;
+            else
+                std::cout << "don't equal" << std::endl;
+            return parent.mat[row][col];
+        }
+    private:
+        Matrix& parent;
+        int row;
+        int col;
+    };
     class RowProxy {
     friend class Matrix;
     public:
@@ -40,18 +51,18 @@ public:
             row(row)
         { }
         
-        int& operator[](int col)
+        IntAdapter operator[](int col)
         {
              if ( parent.mat.find(row) != parent.mat.end() )
              {
                  if ( parent.mat[row].find(col) != parent.mat[row].end()) {
                      std::cout << "exist" << std::endl;
-                     return parent.mat[row][col];
+                     return IntAdapter(parent, row, col);
                  }
             }
             std::cout << "new" << std::endl;
             parent.mat[row][col] = default_number;
-            return parent.mat[row][col];
+            return IntAdapter(parent, row, col);
         }
     private:
         Matrix& parent;
