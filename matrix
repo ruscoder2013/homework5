@@ -83,6 +83,14 @@ public:
     {
         return RowProxy(*this, row);
     }
+    std::tuple<int, int, int> begin() {
+        auto it = mat.begin();
+        int a = it->first;
+        auto it2 = it->second.begin();
+        int b = it2->first;
+        int c = it2->second;
+        return std::make_tuple(a, b, c);
+    }
     std::map<int, std::map<int, int>> mat;
 };
 
@@ -97,10 +105,15 @@ int main() {
     std::cout << (matrix[100][100] == 314) << std::endl;
     std::cout << matrix.size() << std::endl;
     
-    for(auto c: matrix) {
-        int x, y, v;
-        std::tie(x,y,v) = c;
-        std::cout << x << y << v << std::endl;
-    }
+    int x, y, v;
+    std::tie(x,y,v) = matrix.begin();
+    std::cout << x << y << v << std::endl;
+    
+    // std::cout << 
+    // for(auto c: mat1) {
+    //     int x, y, v;
+    //     std::tie(x,y,v) = c;
+    //     std::cout << x << y << v << std::endl;
+    // }
     return 0;
 }
