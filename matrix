@@ -1,5 +1,6 @@
 #include <iostream>
 #include <map>
+#include <tuple>
 
 template<typename T, int default_number>
 class Matrix {
@@ -96,10 +97,10 @@ int main() {
     std::cout << (matrix[100][100] == 314) << std::endl;
     std::cout << matrix.size() << std::endl;
     
-    matrix[0][0];
-    matrix[0][1] = 2;
-    std::cout << matrix[0][1] << std::endl;
-    std::cout << matrix[0][0] << std::endl;
-    std::cout << matrix[3][3] << std::endl;
+    for(auto c: matrix) {
+        int x, y, v;
+        std::tie(x,y,v) = c;
+        std::cout << x << y << v << std::endl;
+    }
     return 0;
 }
