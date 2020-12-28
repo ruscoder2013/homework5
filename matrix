@@ -1,22 +1,6 @@
 #include <iostream>
 #include <map>
 
-
-class Mattr {
-public:
-    operator int() { return 10; }
-    void operator =(const int &a) 
-    {
-        if (a == 5)
-            std::cout << "equal" << std::endl;
-        else
-            std::cout << "don't equal" << std::endl;
-    }
-private:
-    std::map<int, std::map<int, int>> mat;
-};
-
-
 template<typename T, int default_number>
 class Matrix {
 public:
@@ -28,15 +12,34 @@ public:
             row(row),
             col(col)
         { }
-        operator int() { return parent.mat[row][col]; }
+        operator int() { 
+            if ( parent.mat.find(row) != parent.mat.end() )
+                 {
+                     if ( parent.mat[row].find(col) != parent.mat[row].end()) {
+                         return parent.mat[row][col];
+                     }
+                }
+            return default_number;
+        }
         int& operator =(const int &a) 
         {
-            parent.mat[row][col] = a;
-            if (a == 5)
-                std::cout << "equal" << std::endl;
+            if (a == default_number)
+             {
+                  if ( parent.mat.find(row) != parent.mat.end() )
+                 {
+                     if ( parent.mat[row].find(col) != parent.mat[row].end()) {
+                         parent.mat[row].erase(col);
+                         if (parent.mat[row].size() == 0)
+                            parent.mat.erase(row);
+                     }
+                }
+             }
             else
-                std::cout << "don't equal" << std::endl;
-            return parent.mat[row][col];
+            {
+                //std::cout << "don't equal" << std::endl;
+                parent.mat[row][col] = a;
+            }
+            return (int&)a;
         }
     private:
         Matrix& parent;
@@ -56,12 +59,10 @@ public:
              if ( parent.mat.find(row) != parent.mat.end() )
              {
                  if ( parent.mat[row].find(col) != parent.mat[row].end()) {
-                     std::cout << "exist" << std::endl;
+                    // std::cout << "exist" << std::endl;
                      return IntAdapter(parent, row, col);
                  }
             }
-            std::cout << "new" << std::endl;
-            parent.mat[row][col] = default_number;
             return IntAdapter(parent, row, col);
         }
     private:
@@ -69,6 +70,14 @@ public:
         int row;
     };
     
+    int size() {
+        int size = 0;
+        for(const auto& row : mat)
+        {
+            size += row.second.size();   
+        }
+        return size;
+    }
     RowProxy operator[](int row)
     {
         return RowProxy(*this, row);
@@ -79,13 +88,18 @@ public:
 
 int main() {
     Matrix<int, -1> matrix;
+    std::cout << matrix.size() << std::endl;
+    auto a = matrix[1][1];
+    std::cout << (a == -1) << std::endl;
+    std::cout << matrix.size() << std::endl;
+    matrix[100][100] = 314;
+    std::cout << (matrix[100][100] == 314) << std::endl;
+    std::cout << matrix.size() << std::endl;
+    
     matrix[0][0];
     matrix[0][1] = 2;
     std::cout << matrix[0][1] << std::endl;
     std::cout << matrix[0][0] << std::endl;
     std::cout << matrix[3][3] << std::endl;
-    Mattr mattr;
-    std::cout << mattr << std::endl;
-    mattr = 5;
     return 0;
 }
