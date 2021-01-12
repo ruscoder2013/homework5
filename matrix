@@ -79,7 +79,7 @@ public:
 	    std::map<int,int>::iterator it_2
 	    ) :parent(parent), it(it_1), it2(it_2) {
 	        //std::cout << "new" << std::endl;
-	        //std::cout << it_2->first << std::endl;
+	        std::cout << it_2->first << std::endl;
 	    }
 // 		iterator(Double_node *dn): the_node(dn) {}
 // 		iterator(const iterator &it): the_node(it.the_node)
@@ -125,7 +125,6 @@ public:
 		std::tuple<int, int, int> operator*() const
 		{
             int a = it->first;
-            auto it2 = it->second.begin();
             int b = it2->first;
             int c = it2->second;
             return std::make_tuple(a, b, c);
