@@ -74,10 +74,10 @@ public:
 	{
 		friend class Matrix; 
 	public:
-		iterator() :the_node(0) {}
-		iterator(Double_node *dn): the_node(dn) {}
-		iterator(const iterator &it): the_node(it.the_node)
-		{}
+// 		iterator() :the_node(0) {}
+// 		iterator(Double_node *dn): the_node(dn) {}
+// 		iterator(const iterator &it): the_node(it.the_node)
+// 		{}
 		iterator& operator=(const iterator &iter)
 		{
 		    it = iter.it;
@@ -86,7 +86,7 @@ public:
 		}
 		bool operator == (const iterator &iter) const
 		{
-			return ( == it.the_node);
+			return ((iter.it == it) && (iter.it2 == it2));
 		}
 		bool operator!=(const iterator &it) const
 		{
