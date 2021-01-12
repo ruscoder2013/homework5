@@ -78,21 +78,26 @@ public:
  		 std::map<int, std::map<int, int>>::iterator it_1,
 	    std::map<int,int>::iterator it_2
 	    ) :parent(parent), it(it_1), it2(it_2) {
-	        //std::cout << "new" << std::endl;
-	        std::cout << it_2->first << std::endl;
+	        std::cout << "new" << std::endl;
+	        //std::cout << it_2->first << std::endl;
 	    }
 // 		iterator(Double_node *dn): the_node(dn) {}
 // 		iterator(const iterator &it): the_node(it.the_node)
 // 		{}
 		iterator& operator=(const iterator &iter)
 		{
+		    std::cout << "operator =" << std::endl;
 		    it = iter.it;
 		    it2 = iter.it2;
 			return *this;
 		}
 		bool operator == (const iterator &iter) const
 		{
-			return ((iter.it == it) && (iter.it2 == it2));
+		    std::cout << "operator ==" << std::endl;
+		    if(it != parent.mat.end())
+			    return ((iter.it == it) && (iter.it2 == it2));
+			else 
+			    return (iter.it == it);
 		}
 		bool operator!=(const iterator &it) const
 		{
@@ -100,8 +105,9 @@ public:
 		}
 		iterator& operator++()
 		{
-		    std::cout << "operator ++" << std::endl;
-		    it2 = it2++;
+		    std::cout << "operator ++" << it2->first << std::endl;
+		    it2 = ++it2;
+		    std::cout << "operator ++" << it2->first << std::endl;
 		    if(it2 != it->second.end())
 		    {
 		        std::cout << "it2 != it->second.end()" << std::endl;
@@ -111,7 +117,10 @@ public:
 		    else {
 		        it++;
 		        std::cout << "it++" << std::endl;
-		        //if(it != parent.mat.end())
+		        if(it != parent.mat.end())
+		        {
+		            it2 = it->second.begin();
+		        }
 		        return *this;
 		    }
 		}
@@ -161,12 +170,14 @@ public:
     // }
     
     iterator begin() {
+        std::cout << "begin()" << std::endl;
         auto it_1 = mat.begin();
         auto it_2 = it_1->second.begin();
         iterator it(*this, it_1, it_2);
         return it;
     }
     iterator end() {
+        std::cout << "end()" << std::endl;
         auto it_1 = mat.end();
         auto it_2 = it_1->second.begin();
         iterator it(*this, it_1, it_2);
@@ -200,6 +211,7 @@ int main() {
     }
     
     for(auto c: matrix) {
+        std::cout << "mat1" << std::endl;
         int x, y, v;
         std::tie(x,y,v) = c;
         std::cout << x << y << v << std::endl;
