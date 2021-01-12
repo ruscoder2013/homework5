@@ -74,7 +74,10 @@ public:
 	{
 		friend class Matrix; 
 	public:
-// 		iterator() :the_node(0) {}
+ 		iterator(Matrix &parent, 
+ 		 std::map<int, std::map<int, int>>::iterator it_1,
+	    std::map<int,int>::iterator it_2
+	    ) :parent(parent), it(it_1), it2(it_2) {}
 // 		iterator(Double_node *dn): the_node(dn) {}
 // 		iterator(const iterator &it): the_node(it.the_node)
 // 		{}
@@ -94,16 +97,19 @@ public:
 		}
 		iterator& operator++()
 		{
-			it = it++;
-			if it
-			
-			return *this;
+		    it2 = it2++;
+		    if(it2 != it->second.end())
+		        return *this;
+		    else {
+		        it++;
+		        //if(it != parent.mat.end())
+		        return *this;
+		    }
 		}
 
 		//переводит итератор на предідущий узел списка. 
 		iterator & operator--()
 		{
-			
 			return *this;
 		}
 		
@@ -147,15 +153,16 @@ public:
     // }
     
     iterator begin() {
-        auto it = mat.begin();
-        int a = it->first;
-        auto it2 = it->second.begin();
-        int b = it2->first;
-        int c = it2->second;
-        return std::make_tuple(a, b, c);
+        auto it_1 = mat.begin();
+        auto it_2 = it_1->second.begin();
+        iterator it(*this, it_1, it_2);
+        return it;
     }
     iterator end() {
-        return mat.end();
+        auto it_1 = mat.end();
+        auto it_2 = it_1->second.begin();
+        iterator it(*this, it_1, it_2);
+        return it;
     }
     
     std::map<int, std::map<int, int>> mat;
@@ -184,10 +191,10 @@ int main() {
         }
     }
     
-    // for(auto c: matrix) {
-    //     int x, y, v;
-    //     std::tie(x,y,v) = c;
-    //     std::cout << x << y << v << std::endl;
-    // }
+    for(auto c: matrix) {
+        int x, y, v;
+        std::tie(x,y,v) = c;
+        std::cout << x << y << v << std::endl;
+    }
     return 0;
 }
