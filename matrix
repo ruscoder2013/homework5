@@ -77,7 +77,10 @@ public:
  		iterator(Matrix &parent, 
  		 std::map<int, std::map<int, int>>::iterator it_1,
 	    std::map<int,int>::iterator it_2
-	    ) :parent(parent), it(it_1), it2(it_2) {}
+	    ) :parent(parent), it(it_1), it2(it_2) {
+	        //std::cout << "new" << std::endl;
+	        //std::cout << it_2->first << std::endl;
+	    }
 // 		iterator(Double_node *dn): the_node(dn) {}
 // 		iterator(const iterator &it): the_node(it.the_node)
 // 		{}
@@ -97,11 +100,17 @@ public:
 		}
 		iterator& operator++()
 		{
+		    std::cout << "operator ++" << std::endl;
 		    it2 = it2++;
 		    if(it2 != it->second.end())
+		    {
+		        std::cout << "it2 != it->second.end()" << std::endl;
+		        std::cout << it->second.begin()->first << std::endl;
 		        return *this;
+		    }
 		    else {
 		        it++;
+		        std::cout << "it++" << std::endl;
 		        //if(it != parent.mat.end())
 		        return *this;
 		    }
