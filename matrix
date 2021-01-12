@@ -107,7 +107,6 @@ public:
 		{
 		    std::cout << "operator ++" << it2->first << std::endl;
 		    it2 = ++it2;
-		    std::cout << "operator ++" << it2->first << std::endl;
 		    if(it2 != it->second.end())
 		    {
 		        std::cout << "it2 != it->second.end()" << std::endl;
@@ -195,6 +194,8 @@ int main() {
     std::cout << (a == -1) << std::endl;
     std::cout << matrix.size() << std::endl;
     matrix[100][100] = 314;
+    matrix[100][101] = 315;
+    matrix[300][100] = 3314;
     std::cout << (matrix[100][100] == 314) << std::endl;
     std::cout << matrix.size() << std::endl;
     
