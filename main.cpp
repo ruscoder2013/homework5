@@ -4,6 +4,7 @@
 
 template<typename T, int default_number>
 class Matrix {
+    using Matr = std::map<int, std::map<int, int>>;
 public:
     class IntAdapter 
     {
@@ -55,7 +56,7 @@ public:
     {
     	friend class Matrix; 
     public:
-        iterator(Matrix &parent, std::map<int, std::map<int, int>>::iterator it_1, std::map<int,int>::iterator it_2) : parent(parent), 
+        iterator(Matrix &parent, Matr::iterator it_1, std::map<int,int>::iterator it_2) : parent(parent), 
 	it(it_1), it2(it_2) {}
 	    iterator& operator=(const iterator &iter)
 	    {
@@ -92,7 +93,7 @@ public:
             return std::make_tuple(a, b, c);
 	    }
 	private:
-	    std::map<int, std::map<int, int>>::iterator it;
+	    Matr::iterator it;
 	    std::map<int,int>::iterator it2;
 	    Matrix& parent;
 	};	
@@ -119,7 +120,8 @@ public:
         iterator it(*this, it_1, it_2);
         return it;
     }
-    std::map<int, std::map<int, int>> mat; // map<row, map<column,value>>
+    
+    Matr mat; // map<row, map<column,value>>
 };
 
 
