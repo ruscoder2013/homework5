@@ -1,19 +1,19 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(main)
+project(matrix VERSION 0.0.$ENV{TRAVIS_BUILD_NUMBER})
 
-add_executable(main main.cpp)
+add_executable(matrix main.cpp)
 
-set_target_properties(main PROPERTIES CXX_STANDARD 14 CXX_STANDARD_REQUIRED ON)
+set_target_properties(matrix PROPERTIES CXX_STANDARD 14 CXX_STANDARD_REQUIRED ON)
 
 if (MSVC)
     target_compile_options(
-            main PRIVATE
+            matrix PRIVATE
             /W4
     )
 else ()
     target_compile_options(
-            main PRIVATE
+            matrix PRIVATE
             -Wall -Wextra -pedantic #-Werror
     )
 endif()
