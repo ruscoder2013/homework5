@@ -1,5 +1,0 @@
-/home/andrew/homework5/repos/homework5/build/CMakeFiles/rebuild_cache.dir
-/home/andrew/homework5/repos/homework5/build/CMakeFiles/edit_cache.dir
-/home/andrew/homework5/repos/homework5/build/CMakeFiles/main.dir
-/home/andrew/homework5/repos/homework5/build/CMakeFiles/package_source.dir
-/home/andrew/homework5/repos/homework5/build/CMakeFiles/package.dir
