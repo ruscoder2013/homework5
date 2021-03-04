@@ -4,7 +4,7 @@
 
 template<typename T, int default_number>
 class Matrix {
-    using Matr = std::map<int, std::map<int, int>>;
+    using Matr = std::map<int, std::map<int, int>>; 
 public:
     class IntAdapter 
     {
