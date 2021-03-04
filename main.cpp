@@ -5,21 +5,18 @@
 template<typename T, int default_number>
 class Matrix {
 public:
-    class IntAdapter {
-    friend class Matrix;
+    class IntAdapter 
+    {
+        friend class Matrix;
     public:
         IntAdapter(Matrix &parent, int row, int col) : 
             parent(parent),
             row(row),
-            col(col)
-        { }
+            col(col){ }
         operator int() { 
             if ( parent.mat.find(row) != parent.mat.end() )
-                 {
-                     if ( parent.mat[row].find(col) != parent.mat[row].end()) {
-                         return parent.mat[row][col];
-                     }
-                }
+                if ( parent.mat[row].find(col) != parent.mat[row].end())
+                    return parent.mat[row][col];
             return default_number;
         }
         int& operator =(const int &a) 
@@ -36,10 +33,7 @@ public:
                 }
              }
             else
-            {
-                //std::cout << "don't equal" << std::endl;
                 parent.mat[row][col] = a;
-            }
             return (int&)a;
         }
     private:
@@ -48,7 +42,7 @@ public:
         int col;
     };
     class RowProxy {
-    friend class Matrix;
+        friend class Matrix;
     public:
         RowProxy(Matrix &parent, int row) : 
             parent(parent),
@@ -57,13 +51,6 @@ public:
         
         IntAdapter operator[](int col)
         {
-             if ( parent.mat.find(row) != parent.mat.end() )
-             {
-                 if ( parent.mat[row].find(col) != parent.mat[row].end()) {
-                    // std::cout << "exist" << std::endl;
-                     return IntAdapter(parent, row, col);
-                 }
-            }
             return IntAdapter(parent, row, col);
         }
     private:
@@ -78,22 +65,15 @@ public:
  		 std::map<int, std::map<int, int>>::iterator it_1,
 	    std::map<int,int>::iterator it_2
 	    ) :parent(parent), it(it_1), it2(it_2) {
-	        std::cout << "new" << std::endl;
-	        //std::cout << it_2->first << std::endl;
 	    }
-// 		iterator(Double_node *dn): the_node(dn) {}
-// 		iterator(const iterator &it): the_node(it.the_node)
-// 		{}
 		iterator& operator=(const iterator &iter)
 		{
-		    std::cout << "operator =" << std::endl;
 		    it = iter.it;
 		    it2 = iter.it2;
 			return *this;
 		}
 		bool operator == (const iterator &iter) const
 		{
-		    std::cout << "operator ==" << std::endl;
 		    if(it != parent.mat.end())
 			    return ((iter.it == it) && (iter.it2 == it2));
 			else 
@@ -105,31 +85,14 @@ public:
 		}
 		iterator& operator++()
 		{
-		    std::cout << "operator ++" << it2->first << std::endl;
 		    it2 = ++it2;
-		    if(it2 != it->second.end())
-		    {
-		        std::cout << "it2 != it->second.end()" << std::endl;
-		        std::cout << it->second.begin()->first << std::endl;
-		        return *this;
-		    }
-		    else {
+		    if(it2 == it->second.end()) {
 		        it++;
-		        std::cout << "it++" << std::endl;
 		        if(it != parent.mat.end())
-		        {
 		            it2 = it->second.begin();
-		        }
-		        return *this;
 		    }
-		}
-
-		//переводит итератор на предідущий узел списка. 
-		iterator & operator--()
-		{
-			return *this;
-		}
-		
+            return *this;
+		}		
 		std::tuple<int, int, int> operator*() const
 		{
             int a = it->first;
@@ -147,75 +110,50 @@ public:
     int size() {
         int size = 0;
         for(const auto& row : mat)
-        {
             size += row.second.size();   
-        }
         return size;
     }
     RowProxy operator[](int row)
     {
         return RowProxy(*this, row);
     }
-    // std::tuple<int, int, int> begin() {
-    //     auto it = mat.begin();
-    //     int a = it->first;
-    //     auto it2 = it->second.begin();
-    //     int b = it2->first;
-    //     int c = it2->second;
-    //     return std::make_tuple(a, b, c);
-    // }
-    // auto end() {
-    //     return mat.end();
-    // }
     
     iterator begin() {
-        std::cout << "begin()" << std::endl;
         auto it_1 = mat.begin();
         auto it_2 = it_1->second.begin();
         iterator it(*this, it_1, it_2);
         return it;
     }
     iterator end() {
-        std::cout << "end()" << std::endl;
         auto it_1 = mat.end();
         auto it_2 = it_1->second.begin();
         iterator it(*this, it_1, it_2);
         return it;
     }
-    
-    std::map<int, std::map<int, int>> mat;
+    std::map<int, std::map<int, int>> mat; // map<row, map<column,value>>
 };
 
 
 int main() {
-    Matrix<int, -1> matrix;
-    std::cout << matrix.size() << std::endl;
-    auto a = matrix[1][1];
-    std::cout << (a == -1) << std::endl;
-    std::cout << matrix.size() << std::endl;
-    matrix[100][100] = 314;
-    matrix[100][101] = 315;
-    matrix[300][100] = 3314;
-    std::cout << (matrix[100][100] == 314) << std::endl;
-    std::cout << matrix.size() << std::endl;
-    
-    std::map<int, std::map<int, int>> mat;
-    mat[1][2] = 12;
-    mat[2][3] = 23;
-    for(auto it: mat) {
-        int a = it.first;
-        for(auto it2: it.second) {
-            int b = it2.first;
-            int c = it2.second;
-            std::cout << a << b << c << std::endl;
-        }
-    }
-    
-    for(auto c: matrix) {
-        std::cout << "mat1" << std::endl;
+    Matrix<int, 0> matrix_2;
+    for(int i = 0; i < 10; i++)
+    {
+        matrix_2[i][i] = i;
+        matrix_2[10-i][i] = 10-i;
+    }        
+    for(int i = 1; i <9; i++)
+    {
+        for(int j = 1; j<9; j++)
+            std::cout << matrix_2[i][j] << " ";
+        std::cout << std::endl;
+    }    
+    std::cout << matrix_2.size() << std::endl;
+
+    for(auto c: matrix_2) {
         int x, y, v;
         std::tie(x,y,v) = c;
-        std::cout << x << y << v << std::endl;
+        std::cout << "[" << x << "]" <<
+                     "[" << y << "]=" << v << std::endl;
     }
     return 0;
 }
