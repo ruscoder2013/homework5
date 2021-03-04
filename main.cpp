@@ -57,40 +57,40 @@ public:
     public:
         iterator(Matrix &parent, std::map<int, std::map<int, int>>::iterator it_1, std::map<int,int>::iterator it_2) : parent(parent), 
 	it(it_1), it2(it_2) {}
-	iterator& operator=(const iterator &iter)
-	{
+	    iterator& operator=(const iterator &iter)
+	    {
             it = iter.it;
             it2 = iter.it2;
-	    return *this;
-	}
-	bool operator == (const iterator &iter) const
-	{
-	    if(it != parent.mat.end())
-	        return ((iter.it == it) && (iter.it2 == it2));
-	    else 
+	        return *this;
+	    }
+	    bool operator == (const iterator &iter) const
+	    {
+	        if(it != parent.mat.end())
+	            return ((iter.it == it) && (iter.it2 == it2));
+	        else 
                 return (iter.it == it);
-	}
-	bool operator!=(const iterator &it) const
-	{
-	    return !(it == *this);
-	}
-	iterator& operator++()
-	{
+	    }
+	    bool operator!=(const iterator &it) const
+	    {
+	        return !(it == *this);
+	    }
+	    iterator& operator++()
+	    {
             it2 = ++it2;
             if(it2 == it->second.end()) {
                 it++;
-		if(it != parent.mat.end())
-		    it2 = it->second.begin();
-	    }
+		    if(it != parent.mat.end())
+		        it2 = it->second.begin();
+	        }
             return *this;
         }		
-	std::tuple<int, int, int> operator*() const
-	{
+	    std::tuple<int, int, int> operator*() const
+	    {
             int a = it->first;
             int b = it2->first;
             int c = it2->second;
             return std::make_tuple(a, b, c);
-	}
+	    }
 	private:
 	    std::map<int, std::map<int, int>>::iterator it;
 	    std::map<int,int>::iterator it2;
