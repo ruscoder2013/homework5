@@ -17,7 +17,7 @@ public:
                     return parent.mat[row][col];
             return default_number;
         }
-        int& operator =(const int &a) 
+        void operator =(const int &a) 
         {
             if (a == default_number)
             {
@@ -32,7 +32,6 @@ public:
             }
             else
                 parent.mat[row][col] = a;
-            return (int&)a;
         }
     private:
         Matrix& parent;
